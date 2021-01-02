@@ -9,11 +9,39 @@
 	
 		<main class="container">
 	
-			<div class="starter-template text-center py-5 px-3">
-				<h1>Admin Pages</h1>
+			<h1 class="display-2">Pages</h1>
+			<a  href="/admin/pages/add" class="btn btn-primary mb-5">Add new</a>
+			
+			<div th:if="${!pages.empty}">
+
+				<table class="table table-bordered table-striped">
+					<thead class="table-dark">
+						<tr>
+							<th>Title</th>
+							<th>Slug</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="page: ${pages}">
+							<td th:text="${page.title}"/>
+							<td th:text="${page.slug}"/>
+							<td><a th:href="@{'/admin/pages/edit/' + ${page.id}}">Edit</a></td>
+							<td><a th:href="@{'/admin/pages/delete/' + ${page.id}}">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>			
+			
+			</div>
+
+			<div th:unless="${!pages.empty}">
+				<h4 class="display-4">There are no pages at the moment</h4>
 			</div>
 	
 		</main><!-- /.container -->
+		
 		<footer th:replace="/fragments/footer"></footer>
+	
 	</body>
 </html>
