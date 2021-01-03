@@ -6,4 +6,6 @@ import com.guzman.cmsshoppingcart.model.data.Page;
 
 public interface PageRepository extends JpaRepository<Page, Integer> {
 
+	public Page findBySlug(String slug);
+	
 }
