@@ -16,8 +16,8 @@
 			
 			<div th:if="${!pages.empty}">
 
-				<table class="table table-bordered table-striped">
-					<thead class="table-dark">
+				<table id="pages" class="table table-bordered table-striped table sorting">
+					<thead class="table-dark home">
 						<tr>
 							<th>Title</th>
 							<th>Slug</th>
@@ -26,7 +26,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="page: ${pages}">
+						<tr th:each="page: ${pages}" th:id="'id_' + ${page.id}" th:class="${page.slug}">
 							<td th:text="${page.title}"/>
 							<td th:text="${page.slug}"/>
 							<td>
@@ -54,5 +54,20 @@
 		
 		<footer th:replace="/fragments/footer"></footer>
 	
+		<script type="text/javascript">
+			
+			$("table#pages tbody").sortable({
+				items : "tr:not(.home)",
+				update : function() {
+					let ids = $("table#pages tbody").sortable("serialize");
+					let url = "/admin/pages/reorder";
+
+					$.post(url, ids, function(data) {
+						console.log(data);
+					});
+				}
+			});
+		</script>
+		
 	</body>
 </html>

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.guzman.cmsshoppingcart.model.PageRepository;
@@ -28,7 +30,7 @@ public class AdminPagesController {
 	@GetMapping
 	public String index(Model model) {
 		
-		List<Page> pages = pageRepository.findAll();
+		List<Page> pages = pageRepository.findAllByOrderBySortingAsc();
 		
 		model.addAttribute("pages", pages);
 		
@@ -125,6 +127,21 @@ public class AdminPagesController {
 		theAttributes.addFlashAttribute("alertClass", "alert-success");
 		
 		return "redirect:/admin/pages";
+	}
+	
+	@PostMapping("/reorder")
+	public @ResponseBody String reorder(@RequestParam("id[]") int[] thePageIds) {
+		
+		int count = 1;
+		Page thePage;
+		
+		for (int theId : thePageIds) {
+			thePage =  pageRepository.getOne(theId);
+			thePage.setSorting(count++);
+			pageRepository.save(thePage);
+		}
+		
+		return "ok";
 	}
 
 }
