@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -92,4 +93,62 @@ public class AdminCategoriesController {
 
 		return "redirect:/admin/categories/add";
 	}
+	
+	@GetMapping("/edit/{theId}")
+	public String edit(@PathVariable int theId, Model theModel) {
+		
+		Category theCategory = categoryRepository.getOne(theId);
+		
+		theModel.addAttribute("category", theCategory);
+		
+		return "admin/categories/edit";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(@Valid Category theCategory, BindingResult theResult, RedirectAttributes theAttributes, Model theModel) {
+		
+		Category categoryCurrent = categoryRepository.getOne(theCategory.getId());
+		
+		if (theResult.hasErrors()) {
+			theModel.addAttribute("categoryName", categoryCurrent.getName());
+			return "admin/categories/edit";
+		}
+		
+		theAttributes.addFlashAttribute("message", "Category edited");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+		
+		String theSlug = theCategory.getName().toLowerCase().replace(" ", "-");
+		
+		Category categoryExists = categoryRepository.findByName(theCategory.getName());
+		
+		if (categoryExists != null) {			
+			theAttributes.addFlashAttribute("message", "Category exists, please choose another one");
+			theAttributes.addFlashAttribute("alertClass", "alert-danger");
+			
+		} else {
+			theCategory.setSlug(theSlug);
+			
+			categoryRepository.save(theCategory);
+		}
+		
+		return "redirect:/admin/categories/edit/" + theCategory.getId();
+	}
+	
+	@GetMapping("/delete/{theId}")
+	public String add(@PathVariable int theId, RedirectAttributes theAttributes) {
+		
+		categoryRepository.deleteById(theId);
+		
+		theAttributes.addFlashAttribute("message", "Category deleted");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+		
+		return "redirect:/admin/categories";
+	}
 }
+
+
+
+
+
+
+

@@ -47,6 +47,7 @@ LOCK TABLES `categories` WRITE;
 
 INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
 	('1', 'T-Shirts', 't-shirts', '1'),
-    ('2', 'Fruits', 'fruits', '2');
+    ('2', 'Fruits', 'fruits', '2'),
+    ('3', 'Vegetables', 'vegetables', '3');
 
 UNLOCK TABLES;
