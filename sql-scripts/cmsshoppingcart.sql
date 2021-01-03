@@ -42,3 +42,11 @@ INSERT INTO `pages` VALUES
 	(3,'About Us','about-us','About Page', 2);
 	
 UNLOCK TABLES;
+
+LOCK TABLES `categories` WRITE;
+
+INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
+	('1', 'T-Shirts', 't-shirts', '1'),
+    ('2', 'Fruits', 'fruits', '2');
+
+UNLOCK TABLES;
