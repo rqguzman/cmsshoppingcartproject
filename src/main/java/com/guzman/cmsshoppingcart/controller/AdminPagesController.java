@@ -103,7 +103,7 @@ public class AdminPagesController {
 		Page slugExists = pageRepository.findBySlugAndIdNot(theSlug, thePage.getId());
 		
 		if (slugExists != null) {			
-			theAttributes.addFlashAttribute("message", "Slug exists, please choose another one.");
+			theAttributes.addFlashAttribute("message", "Slug exists, please choose another one");
 			theAttributes.addFlashAttribute("alertClass", "alert-danger");
 			theAttributes.addFlashAttribute("page", thePage);
 			
@@ -114,6 +114,17 @@ public class AdminPagesController {
 		}
 		
 		return "redirect:/admin/pages/edit/" + thePage.getId();
+	}
+	
+	@GetMapping("/delete/{theId}")
+	public String add(@PathVariable int theId, RedirectAttributes theAttributes) {
+		
+		pageRepository.deleteById(theId);
+		
+		theAttributes.addFlashAttribute("message", "Page deleted");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+		
+		return "redirect:/admin/pages";
 	}
 
 }
