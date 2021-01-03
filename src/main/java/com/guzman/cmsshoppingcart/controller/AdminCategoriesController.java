@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.guzman.cmsshoppingcart.model.CategoryRepository;
@@ -28,7 +30,7 @@ public class AdminCategoriesController {
 	@GetMapping
 	public String index(Model theModel) {
 		
-		List<Category> categories = categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAllByOrderBySortingAsc();
 		
 		theModel.addAttribute("categories", categories);
 		
@@ -143,6 +145,21 @@ public class AdminCategoriesController {
 		theAttributes.addFlashAttribute("alertClass", "alert-success");
 		
 		return "redirect:/admin/categories";
+	}
+	
+	@PostMapping("/reorder")
+	public @ResponseBody String reorder(@RequestParam("id[]") int[] theCategoriesIds) {
+		
+		int count = 1;
+		Category theCategory;
+		
+		for (int theId : theCategoriesIds) {
+			theCategory = categoryRepository.getOne(theId);
+			theCategory.setSorting(count++);
+			categoryRepository.save(theCategory);
+		}
+		
+		return "ok";
 	}
 }
 
