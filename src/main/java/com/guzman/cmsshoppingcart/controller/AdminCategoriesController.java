@@ -2,12 +2,17 @@ package com.guzman.cmsshoppingcart.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.guzman.cmsshoppingcart.model.CategoryRepository;
 import com.guzman.cmsshoppingcart.model.data.Category;
@@ -57,5 +62,34 @@ public class AdminCategoriesController {
 	public String add(@ModelAttribute Category theCategory) {
 				
 		return "admin/categories/add";
+	}
+	
+	@PostMapping("/add")
+	public String add(@Valid Category theCategory, BindingResult theResult, RedirectAttributes theAttributes, Model theModel) {
+
+		if (theResult.hasErrors()) {
+			return "admin/categories/add";
+		}
+
+		theAttributes.addFlashAttribute("message", "Category added");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+
+		String theSlug = theCategory.getName().toLowerCase().replace(" ", "-");
+		
+		Category categoryExists = categoryRepository.findByName(theCategory.getName());
+		
+		if (categoryExists != null) {			
+			theAttributes.addFlashAttribute("message", "Category exists, please choose another one.");
+			theAttributes.addFlashAttribute("alertClass", "alert-danger");
+			theAttributes.addFlashAttribute("categoryInfo", theCategory);
+			
+		} else {
+			theCategory.setSlug(theSlug);
+			theCategory.setSorting(100);
+			
+			categoryRepository.save(theCategory);
+		}
+
+		return "redirect:/admin/categories/add";
 	}
 }
