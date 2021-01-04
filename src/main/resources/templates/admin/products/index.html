@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="/fragments/head"></head>
+	
+	<body>
+	
+		<nav th:replace="/fragments/nav :: nav-admin"></nav>
+	
+		<main class="container">
+	
+			<h1 class="display-2">Products</h1>
+			<a  href="/admin/products/add" class="btn btn-primary mb-5">Add new</a>
+			
+			<div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+			
+			<div th:if="${!products.empty}">
+
+				<table id="products" class="table table-bordered table-striped">
+					<thead class="table-dark">
+						<tr>
+							<th>Name</th>
+							<th>Image</th>
+							<th>Category</th>
+							<th>Price</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="product: ${products}">
+							<td th:text="${product.name}"/>
+							<td th:text="${product.image}"/>
+							<td th:text="${product.category_id}"/>
+							<td th:text="${product.price}"/>
+							<td>
+								<a th:href="@{'/admin/products/edit/' + ${product.id}}">
+									Edit
+								</a>
+							</td>
+							<td>
+								<a th:href="@{'/admin/products/delete/' + ${product.id}}" onclick="if (!(confirm('Confirm deletion?'))) return false">
+									Delete
+								</a>
+							</td>
+					</tr>
+					</tbody>
+				</table>			
+			
+			</div>
+
+			<div th:unless="${!products.empty}">
+				<h4 class="display-4">There are no products at the moment</h4>
+			</div>
+	
+		</main><!-- /.container -->
+		
+		<footer th:replace="/fragments/footer"></footer>
+		
+	</body>
+</html>

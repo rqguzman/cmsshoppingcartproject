@@ -45,7 +45,7 @@ CREATE TABLE `cmsshoppingcart`.`categories` (
   `price` DECIMAL(8,2) NOT NULL,
   `category_id` INT(11) NOT NULL,
   `created_at` TIMESTAMP NOT NULL,
-  `upadated_at` TIMESTAMP NOT NULL,
+  `updated_at` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`)
   )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
  
