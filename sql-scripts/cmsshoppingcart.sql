@@ -29,7 +29,26 @@ CREATE TABLE `cmsshoppingcart`.`categories` (
   `sorting` INT(3) NOT NULL,
   PRIMARY KEY (`id`)
   )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-  
+ 
+--
+-- Table structure for table `products`
+--
+
+ DROP TABLE IF EXISTS `products`;
+ 
+ CREATE TABLE `cmsshoppingcart`.`products` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `slug` VARCHAR(45) NOT NULL,
+  `description` TEXT NOT NULL,
+  `image` VARCHAR(45) NOT NULL,
+  `price` DECIMAL(8,2) NOT NULL,
+  `category_id` INT(11) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL,
+  `upadated_at` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+ 
 --
 -- Dumping data for table `pages`
 --
@@ -43,6 +62,10 @@ INSERT INTO `pages` VALUES
 	
 UNLOCK TABLES;
 
+--
+-- Dumping data for table `categories`
+--
+
 LOCK TABLES `categories` WRITE;
 
 INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
@@ -51,3 +74,8 @@ INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
     ('3', 'Vegetables', 'vegetables', '3');
 
 UNLOCK TABLES;
+
+--
+-- Dumping data for table `products`
+--
+
