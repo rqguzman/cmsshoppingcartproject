@@ -76,6 +76,18 @@ INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
 UNLOCK TABLES;
 
 --
--- Dumping data for table `products`
+-- Create a foreign key constraint for table `products`
+-- This way, if a category is deleted, all of its 
+-- products will be deleted as well.
 --
+ALTER TABLE `cmsshoppingcart`.`products` 
+ADD INDEX `category_id` (`category_id` ASC) VISIBLE;
+;
+
+ALTER TABLE `cmsshoppingcart`.`products` 
+ADD CONSTRAINT `category_id_fk`
+  FOREIGN KEY (`category_id`)
+  REFERENCES `cmsshoppingcart`.`categories` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
 

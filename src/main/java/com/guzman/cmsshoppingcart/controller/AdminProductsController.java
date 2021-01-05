@@ -1,6 +1,5 @@
 package com.guzman.cmsshoppingcart.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -83,13 +82,7 @@ public class AdminProductsController {
 		
 		String filename = file.getOriginalFilename();
 		
-		File path = new File("src" + File.separator + "main" 
-								+ File.separator + "resources" 
-								+ File.separator + "static" 
-								+ File.separator + "media" 
-								+ File.separator + filename);
-		
-		Path filepath = Paths.get(path.toString());
+		Path filepath = Paths.get("src/main/resources/static/media/" + filename);
 		
 		if (filename.endsWith("jpg") || filename.endsWith("png")) {
 			theFileOK = true;
@@ -219,5 +212,22 @@ public class AdminProductsController {
 		}
 
 		return "redirect:/admin/products/edit/" + theProduct.getId();
+	}
+	
+	@GetMapping("/delete/{theId}")
+	public String delete(@PathVariable int theId, RedirectAttributes theAttributes) throws IOException {
+		
+		Product theProduct = productRepository.getOne(theId);
+		
+		Product currentProduct = productRepository.getOne(theProduct.getId());
+		
+		Path filepath2 = Paths.get("src/main/resources/static/media/" + currentProduct.getImage());
+		Files.delete(filepath2);
+		productRepository.deleteById(theId);
+		
+		theAttributes.addFlashAttribute("message", "Product deleted");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+		
+		return "redirect:/admin/products";
 	}
 }
