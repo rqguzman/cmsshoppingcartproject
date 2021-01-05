@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -124,4 +125,17 @@ public class AdminProductsController {
 
 		return "redirect:/admin/products/add";
 	}
+	
+	@GetMapping("/edit/{theId}")
+	public String edit(@PathVariable int theId, Model theModel) {
+		
+		Product theProduct = productRepository.getOne(theId);
+		List<Category> theCategories = categoryRepository.findAll();
+		
+		theModel.addAttribute("product", theProduct);
+		theModel.addAttribute("categories", theCategories);
+		
+		return "admin/products/edit";
+	}
+	
 }
