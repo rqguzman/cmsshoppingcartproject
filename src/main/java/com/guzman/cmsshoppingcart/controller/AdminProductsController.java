@@ -10,6 +10,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,9 +40,15 @@ public class AdminProductsController {
 	private CategoryRepository categoryRepository;
 	
 	@GetMapping
-	public String index(Model theModel) {
+	public String index(Model theModel, @RequestParam(value="page", required = false) Integer thePage) {
 		
-		List<Product> theProducts = productRepository.findAll();
+		// Pagination
+		int perPage = 3;
+		int page = (thePage != null) ? thePage.intValue() : 0;
+		Pageable pageable = PageRequest.of(page, perPage);
+		
+		
+		Page<Product> theProducts = productRepository.findAll(pageable);
 		List<Category> theCategories = categoryRepository.findAll();		
 		HashMap<Integer, String> categoriesWithNames = new HashMap<>();
 		
@@ -48,6 +58,15 @@ public class AdminProductsController {
 		
 		theModel.addAttribute("products", theProducts);
 		theModel.addAttribute("categoriesWithNames", categoriesWithNames);
+		
+		//pagination
+		Long count = productRepository.count();// counts how many products
+		double pageCount = Math.ceil((double)count/(double)perPage);
+		
+		theModel.addAttribute("pageCount", (int) pageCount); 
+		theModel.addAttribute("perPage", perPage); 
+		theModel.addAttribute("count", count); 
+		theModel.addAttribute("page", page); 
 		
 		return "admin/products/index";
 	}
