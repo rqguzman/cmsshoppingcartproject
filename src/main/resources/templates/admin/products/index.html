@@ -30,9 +30,12 @@
 					<tbody>
 						<tr th:each="product: ${products}">
 							<td th:text="${product.name}"/>
-							<td th:text="${product.image}"/>
-							<td th:text="${product.category_id}"/>
-							<td th:text="${product.price}"/>
+							<td>
+								<img class="img-thumbnail" style="width: 50px;" th:src="@{'/media/' + ${product.image}}">
+							</td>
+								
+							<td th:text="${categoriesWithNames[__${product.categoryId}__]}"/>
+							<td th:text="'$ ' + ${product.price}"/>
 							<td>
 								<a th:href="@{'/admin/products/edit/' + ${product.id}}">
 									Edit
