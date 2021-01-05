@@ -79,7 +79,7 @@ public class AdminProductsController {
 		// DEALING WITH THE IMAGE FILE
 		boolean theFileOK = false;
 		
-		byte[ ] bytes = file.getBytes();
+		byte[] bytes = file.getBytes();
 		
 		String filename = file.getOriginalFilename();
 		
@@ -130,6 +130,7 @@ public class AdminProductsController {
 	public String edit(@PathVariable int theId, Model theModel) {
 		
 		Product theProduct = productRepository.getOne(theId);
+		
 		List<Category> theCategories = categoryRepository.findAll();
 		
 		theModel.addAttribute("product", theProduct);
@@ -138,4 +139,85 @@ public class AdminProductsController {
 		return "admin/products/edit";
 	}
 	
+	@PostMapping("/edit")
+	public String edit(@Valid Product theProduct,
+						BindingResult theResult,
+						MultipartFile file , 
+						RedirectAttributes theAttributes,
+						Model theModel) throws IOException {
+
+		Product currentProduct = productRepository.getOne(theProduct.getId());
+		
+		List<Category> theCategories = categoryRepository.findAll();
+		
+		if (theResult.hasErrors()) {
+			theModel.addAttribute("productName", currentProduct.getName());
+			theModel.addAttribute("categories", theCategories);
+			return "admin/products/edit";
+		}
+
+		// DEALING WITH THE IMAGE FILE
+		boolean theFileOK = false;
+		
+		byte[] bytes = file.getBytes();
+		
+		String filename = file.getOriginalFilename();
+				
+		Path filepath = Paths.get("src/main/resources/static/media/" + filename);
+		
+		if (!file.isEmpty()) {
+
+			if (filename.endsWith("jpg") || filename.endsWith("png")) {
+				theFileOK = true;
+			}
+
+		} else {
+
+			theFileOK = true;
+
+		}
+		
+		
+		theAttributes.addFlashAttribute("message", "Product edited");
+		theAttributes.addFlashAttribute("alertClass", "alert-success");
+
+		String theSlug = theProduct.getName().toLowerCase().replace(" ", "-");
+		
+		Product theProductExists = productRepository.findBySlugAndIdNot(theSlug, theProduct.getId());
+		
+		if (!theFileOK) {
+			
+			theAttributes.addFlashAttribute("message", "Image must be a jpg or a png");
+			theAttributes.addFlashAttribute("alertClass", "alert-danger");
+			theAttributes.addFlashAttribute("product", theProduct);
+			
+		} else if (theProductExists != null) {			
+			
+			theAttributes.addFlashAttribute("message", "Product exists, please choose another one.");
+			theAttributes.addFlashAttribute("alertClass", "alert-danger");
+			theAttributes.addFlashAttribute("product", theProduct);
+			
+		} else {
+			
+			theProduct.setSlug(theSlug);
+			
+			if (!file.isEmpty()) {
+
+				Path filepath2 = Paths.get("src/main/resources/static/media/" + currentProduct.getImage());
+				Files.delete(filepath2);
+				theProduct.setImage(filename);
+				Files.write(filepath, bytes);
+
+			} else {
+
+				theProduct.setImage(currentProduct.getImage());
+
+			}
+			
+			productRepository.save(theProduct);
+			
+		}
+
+		return "redirect:/admin/products/edit/" + theProduct.getId();
+	}
 }

@@ -34,3 +34,11 @@ build/
 
 ### Project settings ###
 application.properties
+
+### IMAGES ###
+# JPEG
+*.jpg
+*.jpeg
+
+# Portable Network Graphics
+*.png
