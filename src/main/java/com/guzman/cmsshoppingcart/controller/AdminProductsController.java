@@ -60,7 +60,7 @@ public class AdminProductsController {
 		theModel.addAttribute("categoriesWithNames", categoriesWithNames);
 		
 		//pagination
-		Long count = productRepository.count();// counts how many products
+		long count = productRepository.count();// counts how many products
 		double pageCount = Math.ceil((double)count/(double)perPage);
 		
 		theModel.addAttribute("pageCount", (int) pageCount); 
