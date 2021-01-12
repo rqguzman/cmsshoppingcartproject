@@ -12,8 +12,8 @@
 
 		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 			<ul class="navbar-nav me-auto mb-2 mb-md-0">
-				<li th:each="page: ${cpages}" class="nav-item active">
-					<a th:if="${page.slug != 'home'}" th:href="@{'/' + ${page.slug}}" th:text="${page.title}" class="nav-link"	aria-current="page"></a>
+				<li  th:if="${page.slug != 'home'}"  th:each="page: ${cpages}" class="nav-item active">
+					<a th:href="@{'/' + ${page.slug}}" th:text="${page.title}" class="nav-link"	aria-current="page"></a>
 				</li>
 			</ul>
 			
