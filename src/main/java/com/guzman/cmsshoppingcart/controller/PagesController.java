@@ -16,27 +16,27 @@ public class PagesController {
 
 	@Autowired
 	private PageRepository pageRepository;
-	
+
 	@GetMapping
 	public String home(Model theModel) {
-		
+
 		Page page = pageRepository.findBySlug("home");
 		theModel.addAttribute("page", page);
-		
+
 		return "page";
 	}
-	
+
 	@GetMapping("/{slug}")
 	public String page(@PathVariable String slug, Model theModel) {
-		
+
 		Page page = pageRepository.findBySlug(slug);
-		
+
 		if (page == null) {
 			return "redirect:/";
 		}
-		
+
 		theModel.addAttribute("page", page);
-		
+
 		return "page";
 	}
 }
