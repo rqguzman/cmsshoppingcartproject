@@ -23,7 +23,7 @@ public class CartController {
 	private  ProductRepository productRepository;
 	
 	@GetMapping("/add/{theId}")
-	public String add(@PathVariable int theId, HttpSession session, Model model) {
+	public String add(@PathVariable int theId, HttpSession session, Model theModel) {
 		
 		// get the product
 		Product product = productRepository.getOne(theId);
@@ -61,7 +61,21 @@ public class CartController {
 			
 		}
 		
-		return null;
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, Cart> cart = (HashMap<Integer, Cart>) session.getAttribute("cart");
+		
+		int size = 0;
+		double total = 0.0;
+		
+		for (Cart cartValue : cart.values()) {
+			size += cartValue.getQuantity();
+			total += cartValue.getQuantity() * Double.parseDouble(product.getPrice());
+		}
+		
+		theModel.addAttribute("size", size);
+		theModel.addAttribute("total", total);
+		
+		return "cart_view";
 	}
 	
 }
