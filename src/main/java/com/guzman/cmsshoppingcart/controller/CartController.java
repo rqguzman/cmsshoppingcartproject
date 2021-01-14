@@ -2,6 +2,7 @@ package com.guzman.cmsshoppingcart.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,39 @@ public class CartController {
 		theModel.addAttribute("notCartViewPage", true);
 		
 		return "cart";
+	}
+	
+	@GetMapping("/subtract/{theId}")
+	public String subtract(@PathVariable int theId, 
+			HttpSession session, 
+			Model theModel,
+			HttpServletRequest httpServletRequest) {
+		
+		Product product = productRepository.getOne(theId);
+		
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, Cart> cart = (HashMap<Integer, Cart>) session.getAttribute("cart");
+		
+		int qty = cart.get(theId).getQuantity();
+		
+		// if user remove the single unit of a product, it must remove it from the cart.
+		if (qty == 1) {
+			
+			cart.remove(theId);
+			
+			// also, if the product was the only product from the cart, it must be cleared out
+			if (cart.size() == 0) {
+				
+				session.removeAttribute("cart");
+			}
+		} else {
+			cart.put(theId, new Cart(theId, product.getName(), product.getPrice(), --qty, product.getImage()));
+			
+		}
+		
+		String refererLink = httpServletRequest.getHeader("referer");
+		
+		return "redirect:" + refererLink;
 	}
 	
 }
