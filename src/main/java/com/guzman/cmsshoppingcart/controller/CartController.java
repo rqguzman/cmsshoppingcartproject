@@ -40,7 +40,7 @@ public class CartController {
 			HashMap<Integer, Cart> cart = new HashMap<>();
 			cart.put(theId, new Cart(theId, product.getName(), product.getPrice(), 1, product.getImage()));
 			
-			// set session
+			// set cart to session
 			session.setAttribute("cart", cart);
 			
 		} else {
@@ -116,19 +116,42 @@ public class CartController {
 		
 		int qty = cart.get(theId).getQuantity();
 		
-		// if user remove the single unit of a product, it must remove it from the cart.
+		// if there's a single unit of a product and user remove it, it must be removed from cart.
 		if (qty == 1) {
 			
 			cart.remove(theId);
 			
-			// also, if the product was the only product from the cart, it must be cleared out
+			// also, if the product was the only product in the cart, it must be cleared out
 			if (cart.size() == 0) {
 				
 				session.removeAttribute("cart");
 			}
 		} else {
+			// decrement one unit of product's quantity 
 			cart.put(theId, new Cart(theId, product.getName(), product.getPrice(), --qty, product.getImage()));
+		}
+		
+		// get the request header
+		String refererLink = httpServletRequest.getHeader("referer");
+		
+		// redirect user to where header is pointing
+		return "redirect:" + refererLink;
+	}
+	
+	@GetMapping("/remove/{theId}")
+	public String remove(@PathVariable int theId, 
+			HttpSession session, 
+			Model theModel,
+			HttpServletRequest httpServletRequest) {
+		
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, Cart> cart = (HashMap<Integer, Cart>) session.getAttribute("cart");
+		
+		cart.remove(theId);
+		
+		if (cart.size() == 0) {
 			
+			session.removeAttribute("cart");
 		}
 		
 		String refererLink = httpServletRequest.getHeader("referer");
@@ -136,4 +159,13 @@ public class CartController {
 		return "redirect:" + refererLink;
 	}
 	
+	@GetMapping("/clear")
+	public String clear(HttpSession session, HttpServletRequest httpServletRequest) {
+			
+		session.removeAttribute("cart");
+		
+		String refererLink = httpServletRequest.getHeader("referer");
+		
+		return "redirect:" + refererLink;
+	}
 }
