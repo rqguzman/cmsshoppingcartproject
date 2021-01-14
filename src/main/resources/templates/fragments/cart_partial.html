@@ -1,4 +1,4 @@
-<div th:fragment="cart_partial" class="bg-dark text-white p-3 mt-3">
+<div th:if="${notCartViewPage == null}" th:fragment="cart_partial" class="bg-dark text-white p-3 mt-3">
 
 	<div th:if="${cartActive}" class="cart cart-active">
 
