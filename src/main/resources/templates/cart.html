@@ -16,6 +16,11 @@
 				<div class="col"></div>
 				
 				<div class="col-7">
+				
+					<div class="overlay text-center d-none">
+						<h4>You are being redirected to PayPal...</h4>
+						<img src="/images/ajax-loader.gif">
+					</div>
 					
 					<h2 class="display-4">Cart Overview</h2>
 					
@@ -66,6 +71,38 @@
 			</div>
 	
 		</main><!-- /.container -->
+		
+			
+		<form id="paypalForm" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+		
+			<input type="hidden" name="cmd" value="_cart">
+			<input type="hidden" name="upload" value="1">
+			<input type="hidden" name="business" value="sb-dd*******479@business.example.com">
+		
+			<th:block th:each="el, iter: ${cart}">
+				
+				<input type="hidden" th:name="'item_name_' + ${iter.count}" th:value="${el.value.name}">
+				<input type="hidden" th:name="'amount_' + ${iter.count}" th:value="${el.value.price}">
+				<input type="hidden" th:name="'quantity_' + ${iter.count}" th:value="${el.value.quantity}">
+				
+				<input type="hidden" name="currency_code" value="BRL">
+  				<input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+		
+			</th:block>
+		</form>	
+		
 		<footer th:replace="/fragments/footer"></footer>
+	
+		<script type="text/javascript">
+			$(function () {
+				$("a.checkout").click(function (e) {
+					e.preventDefault();
+					$("div.overlay").removeClass('d-none');
+					$.get('/cart/clear', {}, function() {});
+					$("form#paypalForm").submit();
+				});
+			});
+		</script>
+	
 	</body>
 </html>
