@@ -50,6 +50,34 @@ CREATE TABLE `cmsshoppingcart`.`categories` (
   )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
  
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `cmsshoppingcart`.`users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `phone_number` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+ 
+--
+-- Table structure for table `admins`
+--
+
+DROP TABLE IF EXISTS `admins`;
+
+CREATE TABLE `cmsshoppingcart`.`admins` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+ 
+--
 -- Dumping data for table `pages`
 --
 
