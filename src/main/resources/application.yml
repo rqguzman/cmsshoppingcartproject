@@ -1,0 +1,11 @@
+# It's not usual to have both a '.properties' file AND a '.yml' file on the same project.
+# For eductional purposes, the instructor configured username and password for the application here.
+
+# Passwords and JDBC properties shouldn't be made publicly available on a real project. 
+# On this particular case, they were kept in order to help users of this project.
+
+spring:
+  security:
+    user:
+      name: user
+      password: test123
