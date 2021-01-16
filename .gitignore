@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
 ### STS ###
 .apt_generated
 .classpath
@@ -42,3 +43,11 @@ application.properties
 
 # Portable Network Graphics
 *.png
+
+### Others ###
+.DS_Store
+.metadata
+.mvn
+
+mvnw
+mvnw.cmd
