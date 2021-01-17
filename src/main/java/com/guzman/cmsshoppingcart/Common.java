@@ -1,5 +1,6 @@
 package com.guzman.cmsshoppingcart;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,11 +27,16 @@ public class Common {
 	private CategoryRepository categoryRepository;
 	
 	@ModelAttribute
-	public void sharedData(Model theModel, HttpSession session) {
+	public void sharedData(Model theModel, HttpSession session, Principal principal) {
+		
+		if (principal != null) {
+			theModel.addAttribute("principal", principal.getName());
+		}
+		
 		
 		List<Page> pages = pageRepository.findAllByOrderBySortingAsc();
 
-		List<Category> categories = categoryRepository.findAll();
+		List<Category> categories = categoryRepository.findAllByOrderBySortingAsc();
 		
 		boolean cartActive = false;
 		

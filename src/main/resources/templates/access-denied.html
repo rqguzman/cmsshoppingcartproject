@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head th:replace="/fragments/head"></head>
+	
+	<body>
+	
+		<nav th:replace="/fragments/nav :: nav-front"></nav>
+	
+		<main class="container">
+	
+			<div class="text-center py-5 px-3">
+				<h2>Access Denied - you are not authorized to access this resource.</h2>
+		
+			<hr>
+		
+			<a th:href="@{/}">Back to Home Page</a>	
+			</div>
+	
+		</main><!-- /.container -->
+		<footer th:replace="/fragments/footer"></footer>
+	</body>
+</html>

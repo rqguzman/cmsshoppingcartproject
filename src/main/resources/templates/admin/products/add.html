@@ -21,31 +21,31 @@
 				</div>
 				
 				<div class="form-group">				
-					<label for="">Name</label>
+					<label for="">Name:</label>
 					<input type="text" th:field="*{name}" placeholder="Name" class="form-control mb-4 col-4" />
 					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>				
 				</div>
 				
 				<div class="form-group">				
-					<label for="">Description</label>
+					<label for="">Description:</label>
 					<textarea th:field="*{description}" rows="10" placeholder="Description" class="form-control mb-4"></textarea>				
 					<span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></span>				
 				</div>
 
 				<div class="form-group">				
-					<label for="">Image</label>
+					<label for="">Image:</label>
 					<input th:id="file" th:name="file" type="file" class="form-control mb-4"/>
 					<img alt="" src="#" id="imgPreview1" class="mt-2">
 				</div>
 				
 				<div class="form-group">				
-					<label for="">Price</label>
+					<label for="">Price:</label>
 					<input type="text" th:field="*{price}" placeholder="20 or 20.99" class="form-control mb-4 col-4" />
 					<span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error"></span>				
 				</div>
 
 				<div class="form-group">				
-					<label for="">Category</label>
+					<label for="">Category:</label>
 					<select th:field="*{categoryId}" class="form-control mb-4">
 						<option th:value="0" >Choose a category</option>
 						<option th:each="cat: ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>

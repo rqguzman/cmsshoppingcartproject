@@ -86,9 +86,9 @@ public class AdminPagesController {
 	}
 
 	@PostMapping("/edit")
-	public String edit(@Valid Page thePage, BindingResult theResult, RedirectAttributes theAttributes, Model theModel) {
+	public String edit(@Valid Page page, BindingResult theResult, RedirectAttributes theAttributes, Model theModel) {
 		
-		Page pageCurrent = pageRepository.getOne(thePage.getId());
+		Page pageCurrent = pageRepository.getOne(page.getId());
 		
 		if (theResult.hasErrors()) {
 			theModel.addAttribute("pageTitle", pageCurrent.getTitle());
@@ -98,24 +98,24 @@ public class AdminPagesController {
 		theAttributes.addFlashAttribute("message", "Page edited");
 		theAttributes.addFlashAttribute("alertClass", "alert-success");
 		
-		String theSlug = thePage.getSlug() == "" ? thePage.getTitle().toLowerCase().replace(" ", "-")
-				: thePage.getSlug().toLowerCase().replace(" ", "-");
+		String slug = page.getSlug() == "" ? page.getTitle().toLowerCase().replace(" ", "-")
+				: page.getSlug().toLowerCase().replace(" ", "-");
 		
-		//Page slugExists = pageRepository.findBySlug(thePage.getId(), theSlug);
-		Page slugExists = pageRepository.findBySlugAndIdNot(theSlug, thePage.getId());
+//		Page slugExists = pageRepository.findBySlugAndIdNot(slug, page.getId());
+		Page slugExists = pageRepository.findBySlug(page.getId(), slug);
 		
 		if (slugExists != null) {			
 			theAttributes.addFlashAttribute("message", "Slug exists, please choose another one");
 			theAttributes.addFlashAttribute("alertClass", "alert-danger");
-			theAttributes.addFlashAttribute("page", thePage);
+			theAttributes.addFlashAttribute("page", page);
 			
 		} else {
-			thePage.setSlug(theSlug);
+			page.setSlug(slug);
 			
-			pageRepository.save(thePage);
+			pageRepository.save(page);
 		}
 		
-		return "redirect:/admin/pages/edit/" + thePage.getId();
+		return "redirect:/admin/pages/edit/" + page.getId();
 	}
 	
 	@GetMapping("/delete/{theId}")

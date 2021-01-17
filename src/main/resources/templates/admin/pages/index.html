@@ -54,8 +54,14 @@
 		
 		<footer th:replace="/fragments/footer"></footer>
 	
-		<script type="text/javascript">
-			
+		<script>
+
+			let token = $("meta[name='_csrf']").attr("content");
+		    let header = $("meta[name='_csrf_header']").attr("content");
+		    $(document).ajaxSend(function (e, xhr, options) {
+		        xhr.setRequestHeader(header, token);
+		    });
+		    
 			$("table#pages tbody").sortable({
 				items : "tr:not(.home)",
 				update : function() {

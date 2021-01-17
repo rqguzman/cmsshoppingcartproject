@@ -9,7 +9,7 @@
 	
 		<main class="container">
 	
-			<h1 th:text="'Edit ' + (${pageTitle} ?: ${page.title})" class="display-2">Placeholder</h1>
+			<h1 th:text="'Edit ' + (${pageTitle} ?: ${page.title})" class="display-2"></h1>
 			<a href="/admin/pages" class="btn btn-primary mb-5">Back to pages</a>
 			
 			<div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
@@ -21,18 +21,18 @@
 				</div>
 				
 				<div class="form-group">				
-					<label for="">Title</label>
+					<label for="">Title:</label>
 					<input type="text" th:field="*{title}" placeholder="Title" class="form-control mb-4 col-4" />
 					<span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error"></span>				
 				</div>
 				
 				<div class="form-group" th:classappend="${page.slug == 'home'} ? 'd-none': ''">				
-					<label for="">Slug</label>
+					<label for="">Slug:</label>
 					<input type="text" th:field="*{slug}" th:value="${page.slug}" placeholder="Slug" class="form-control mb-4 col-4" />				
 				</div>
 
 				<div class="form-group">				
-					<label for="">Content</label>
+					<label for="">Content:</label>
 					<textarea th:field="*{content}" th:value="${page.content}" rows="10" placeholder="Content" class="form-control mb-4"></textarea>				
 					<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="error"></span>				
 				</div>

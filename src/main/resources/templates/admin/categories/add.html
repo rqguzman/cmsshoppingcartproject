@@ -21,7 +21,7 @@
 				</div>
 				
 				<div class="form-group">				
-					<label for="">Name</label>
+					<label for="">Name:</label>
 					<input type="text" th:id="name" th:name="name" th:value="${categoryInfo?.name}" placeholder="Name" class="form-control mb-4 col-4" />
 					<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>				
 				</div>

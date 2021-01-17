@@ -86,7 +86,8 @@ LOCK TABLES `pages` WRITE;
 INSERT INTO `pages` VALUES 
 	(1,'Home','home','Home Page', 0),
 	(2,'Services','services','Services Page', 1),
-	(3,'About Us','about-us','About Page', 2);
+	(3,'About Us','about-us','About Page', 2),
+  (4,'Contact','contact','Contact Us', 3);
 	
 UNLOCK TABLES;
 
@@ -98,8 +99,53 @@ LOCK TABLES `categories` WRITE;
 
 INSERT INTO  `categories` (`id`, `name`, `slug`, `sorting`) VALUES
 	('1', 'T-Shirts', 't-shirts', '1'),
-    ('2', 'Fruits', 'fruits', '2'),
-    ('3', 'Vegetables', 'vegetables', '3');
+  ('2', 'Fruits', 'fruits', '2');
+
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+
+INSERT INTO `products` VALUES 
+  (1,'Apples','apples','Nice apples','apples.jpg',1.99,2,'2019-07-02 08:52:17','2019-07-02 09:10:03'),
+  (2,'Bananas','bananas','Tasty bananas','bananas.jpg',3.99,2,'2019-07-02 08:52:48','2019-07-02 09:01:31'),
+  (3,'Black shirt','black-shirt','A black shirt','black shirt.jpg',5.99,1,'2019-07-02 08:53:08','2019-07-02 08:53:08'),
+  (4,'Blue shirt','blue-shirt','A blue shirt','blue shirt.jpg',6.99,1,'2019-07-02 08:53:26','2019-07-02 08:53:26'),
+  (5,'Graperuit','graperuit','Juicy grapefruit','grapefruit.jpg',3.99,2,'2019-07-02 08:53:57','2019-07-02 08:53:57'),
+  (6,'Grapes','grapes','Great grapes','grapes.jpg',2.50,2,'2019-07-02 08:54:19','2019-07-02 08:54:19'),
+  (7,'Grey shirt','grey-shirt','A grey shirt','grey shirt.jpg',3.99,1,'2019-07-02 08:54:35','2019-07-02 08:54:35'),
+  (8,'Kiwi','kiwi','Fresh kiwi','kiwi.jpg',4.99,2,'2019-07-02 08:54:57','2019-07-02 08:54:57'),
+  (9,'Pink shirt','pink-shirt','A pink shirt','pink shirt.jpg',7.99,1,'2019-07-02 08:55:21','2019-07-02 08:55:21'),
+  (10,'Watermelon','watermelon','Juicy watermelon','watermelon.jpg',1.50,2,'2019-07-02 08:55:53','2019-07-02 08:55:53'),
+  (11,'White shirt','white-shirt','A white shirt','white shirt.jpg',4.50,1,'2019-07-02 08:56:11','2019-07-02 08:56:11'),
+  (12,'Yellow shirt','yellow-shirt','A yellow shirt','yellow shirt.jpg',3.50,1,'2019-07-02 08:56:31','2019-07-02 08:56:31');
+
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+
+INSERT INTO `cmsshoppingcart`.`users` (`id`, `username`, `password`, `email`, `phone_number`) VALUES 
+	('1', 'john', '$2y$12$bTHCyzO4NTnEyEafPLX8GuFPPhsLds/Zq/Vn8Fhrkrc9IhVnc1FMS', 'john@festudent.com', '111111'),
+	('2', 'bill', '$2y$12$bTHCyzO4NTnEyEafPLX8GuFPPhsLds/Zq/Vn8Fhrkrc9IhVnc1FMS', 'bil@festudent.com', '222222'),
+	('3', 'jane', '$2y$12$bTHCyzO4NTnEyEafPLX8GuFPPhsLds/Zq/Vn8Fhrkrc9IhVnc1FMS', 'jane@festudent.com', '333333');
+
+UNLOCK TABLES;
+
+--
+-- Dumping data for table `admins`
+--
+
+LOCK TABLES `admins` WRITE;
+
+INSERT INTO `cmsshoppingcart`.`admins` (`id`, `username`, `password`) VALUES
+ ('1', 'admin', '$2y$12$n7v4IYAd/HwnlQA4uVeSXeK7hIIrgpO9joXlGBhjDj8iBYrXFvdVG');
 
 UNLOCK TABLES;
 
@@ -118,4 +164,3 @@ ADD CONSTRAINT `category_id_fk`
   REFERENCES `cmsshoppingcart`.`categories` (`id`)
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
-

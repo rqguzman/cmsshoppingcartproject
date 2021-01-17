@@ -25,6 +25,17 @@ public class PagesController {
 
 		return "page";
 	}
+	
+	@GetMapping("/login")
+	public String login() {
+		
+		return "login";
+	}
+	
+	@GetMapping("/access-denied")
+	public String showAccessDenied() {
+		return "access-denied";
+	}
 
 	@GetMapping("/{slug}")
 	public String page(@PathVariable String slug, Model theModel) {
